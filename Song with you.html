@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gradient Lyrics</title>
+    <style>
+        body {
+            background-color: #111;
+            color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .lyrics-container {
+            text-align: center;
+            font-size: 1.5em;
+            line-height: 1.5em;
+            white-space: pre-wrap;
+        }
+        .lyric-char {
+            display: inline-block;
+            transition: color 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="lyrics-container" id="lyrics"></div>
+    <audio id="song" src="song.mp3" autoplay loop></audio>
+
+    <script>
+        const lyrics = [
+            { text: "I swear, in my eyes, all I see is beauty", delay: 140 },
+            { text: "Follow the lines, want you to see what I see", delay: 150 },
+            { text: "In hopes to capture", delay: 126 },
+            { text: "I'd risk it all to give you a sweet life", delay: 90 },
+            { text: "Hope that you keep it all safe by your side", delay: 175 }
+        ];
+
+        const lyricsContainer = document.getElementById("lyrics");
+
+        let hue = 0;
+
+        function renderLyrics() {
+            let delayOffset = 0;
+
+            lyrics.forEach(line => {
+                const text = line.text;
+                const delay = line.delay;
+
+                for (let i = 0; i < text.length; i++) {
+                    const span = document.createElement("span");
+                    span.classList.add("lyric-char");
+                    span.textContent = text[i];
+
+                    // Set the color in HSL for gradient effect
+                    span.style.color = `hsl(${hue}, 100%, 50%)`;
+                    hue += 360 / text.length;  // Increase hue for color gradient
+
+                    setTimeout(() => {
+                        lyricsContainer.appendChild(span);
+                    }, delayOffset + (delay * i));
+                }
+
+                // Add line break after each line
+                delayOffset += delay * text.length;
+                setTimeout(() => {
+                    const br = document.createElement("br");
+                    lyricsContainer.appendChild(br);
+                }, delayOffset);
+            });
+        }
+
+        renderLyrics();
+    </script>
+</body>
+</html>
